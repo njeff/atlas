@@ -1,10 +1,12 @@
 // include the library code:
 #include <Wire.h> 
 #include <LiquidCrystal.h> 
-#include <Nunchuk.h>
+#include "Nunchuk.h"
+
+#define DEADZONE 20
 
 // Nunchuck for input
-Nunchuk nc = Nunchuk();
+Nunchuk nc = Nunchuk(DEADZONE);
 
 // initialize the library with the numbers of the interface pins
 LiquidCrystal lcd(0, 1, 2, 3, 4, 5);
@@ -22,6 +24,7 @@ void setup(){
 	lcd.print("Duration (min)    0");
 	lcd.setCursor(1, 3);
 	lcd.print("sec/frame         0");
+
 	//ready nunchuck
 	nc.begin();
 	nc.read();
@@ -33,8 +36,6 @@ void loop(){
 	lcd.setCursor(0, 1);
 	lcd.print(">");
 
-	uint32_t lastTime = millis();
-	uint32_t holdStart = 0;
 	uint32_t lastUpdate = 0;
 	uint8_t loopCycle = 125; //how fast to increment value
 
@@ -44,52 +45,35 @@ void loop(){
 		int x = nc.getJoyX();
 		if(millis()-lastUpdate > loopCycle){
 			if (abs(x) > 80){
-			  loopCycle = 75;
+				loopCycle = 75;
 			} else {
-			  loopCycle = 125;
+				loopCycle = 125;
 			}
-			if (x > 20) {
-				if(holdStart == 0){
-					holdStart = millis();
+			if (x > DEADZONE) {
+				if(nc.xTime() > 1000){
+					frames+=5;
 				} else {
-					if(millis() - holdStart > 1000){
-						frames+=10;
-					} else {
-						frames++;
-					}
+					frames++;
 				}
 				lastUpdate = millis();
-			} else if (x < -20) {
-				if(holdStart == 0){
-					holdStart = millis();
+			} else if (x < -DEADZONE) {
+				if(nc.xTime() > 1000){
+					frames-=5;
 				} else {
-					if(millis() - holdStart > 1000){
-						frames-=10;
-					} else {
-						frames--;
-					}
+					frames--;
 				}
 				if(frames < 0){
 					frames = 0;
 				}
 				lastUpdate = millis();
-			} else {
-				holdStart = 0;
 			}
 		}
 		sprintf(buffer, "%5d", frames);
 		lcd.setCursor(15, 1);
 		lcd.print(buffer);
-		if (nc.getButtonZ() != lastZ) { //debounce z
-			if(millis() - lastTime > 50){
-				if(nc.getButtonZ() == 1){
-					lastTime = millis();
-					break;
-				}
-			}
-			lastTime = millis();
+		if(nc.getChangeZ() && nc.zTime() == 1){
+			break;
 		}
-		lastZ = nc.getButtonZ();
 	}
 
 	lcd.setCursor(0, 1);
@@ -109,33 +93,23 @@ void loop(){
 			} else {
 			  loopCycle = 125;
 			}
-			if (x > 20) {
-				if(holdStart == 0){
-					holdStart = millis();
+			if (x > DEADZONE) {
+				if(nc.xTime() > 1000){
+					minutes+=5;
 				} else {
-					if(millis() - holdStart > 1000){
-						minutes+=10;
-					} else {
-						minutes++;
-					}
+					minutes++;
 				}
 				lastUpdate = millis();
-			} else if (x < -20) {
-				if(holdStart == 0){
-					holdStart = millis();
+			} else if (x < -DEADZONE) {
+				if(nc.xTime() > 1000){
+					minutes-=5;
 				} else {
-					if(millis() - holdStart > 1000){
-						minutes-=10;
-					} else {
-						minutes--;
-					}
+					minutes--;
 				}
 				if(minutes < 0){
 					minutes = 0;
 				}
 				lastUpdate = millis();
-			} else {
-				holdStart = 0;
 			}
 		}
 		sprintf(buffer, "%5d", minutes);
@@ -146,16 +120,9 @@ void loop(){
 		sprintf(buffer,"%5lu",timeBetweenFrames/1000);
 		lcd.setCursor(15,3);
 		lcd.print(buffer);
-		if (nc.getButtonZ() != lastZ) { //debounce z
-			if(millis() - lastTime > 50){
-				if(nc.getButtonZ() == 1){
-					lastTime = millis();
-					break;
-				}
-			}
-			lastTime = millis();
+		if(nc.getChangeZ() && nc.zTime() == 1){
+			break;
 		}
-		lastZ = nc.getButtonZ();
 	}
 
 	lcd.setCursor(0, 2);
@@ -173,51 +140,34 @@ void loop(){
 			} else {
 			  loopCycle = 125;
 			}
-			if (x > 20) {
-				if(holdStart == 0){
-					holdStart = millis();
+			if (x > DEADZONE) {
+				if(nc.xTime() > 1000){
+					exposure+=5;
 				} else {
-					if(millis() - holdStart > 1000){
-						exposure+=10;
-					} else {
-						exposure++;
-					}
+					exposure++;
 				}
 				if(exposure > (int)(timeBetweenFrames/1000 - 2)){ //maximum exposure
 					exposure = timeBetweenFrames/1000 - 2;
 				}
 				lastUpdate = millis();
-			} else if (x < -20) {
-				if(holdStart == 0){
-					holdStart = millis();
+			} else if (x < -DEADZONE) {
+				if(nc.xTime() > 1000){
+					exposure-=5;
 				} else {
-					if(millis() - holdStart > 1000){
-						exposure-=10;
-					} else {
-						exposure--;
-					}
+					exposure--;
 				}
 				if(exposure< 0){
 					exposure = 0;
 				}
 				lastUpdate = millis();
-			} else {
-				holdStart = 0;
 			}
 		}
 		sprintf(buffer, "%5d", exposure);
 		lcd.setCursor(15, 3);
 		lcd.print(buffer);
-		if (nc.getButtonZ() != lastZ) { //debounce z
-			if(millis() - lastTime > 50){
-				if(nc.getButtonZ() == 1){
-					lastTime = millis();
-					break;
-				}
-			}
-			lastTime = millis();
+		if(nc.getChangeZ() && nc.zTime() == 1){
+			break;
 		}
-		lastZ = nc.getButtonZ();
 	}
 
 	// enter main loop

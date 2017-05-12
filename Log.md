@@ -85,3 +85,7 @@ Jan.-Feb. 2015
     - It uses two tables: one that lists every menu state and input combination and the resulting action, and one that lists the text and function that is supposed to be associated with each state.
 - I may reuse some parts of the scolling menu system I had before.
 - Also looked into [interpolation methods](http://paulbourke.net/miscellaneous/interpolation/) for computing smooth movement between keyframes. Cubic interpolation looks like the easiest way; it just can cause slight overshoot in some cases. 
+
+5.11.17
+- Added hold times to nunchuck library
+- Still need to create better menu system
