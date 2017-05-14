@@ -75,7 +75,7 @@ Jan.-Feb. 2015
 - Need to order parts for the controller and case
 - Currently debating whether gear motors or stepper motors are a better choice for the system. I wanted to use DC worm gear motors with encoders to get closed loop positioning and to get more familiar with control systems. My first dolly used a stepper motor, which has the advantage of being easy to drive at low and high speeds, while gear motors cog up a slow speeds if they are significantly geared down (and if they are geared down to be very slow, they can't run fast anymore). Also the worm gears in the DC motor gearbox prevent back driving when the power is not applied (saving power). I could attach a worm to stepper motors that drive a worm gear to get the precision of the steppers and power saving of worm gears, but that would require me to order another set of motors (costing more money). I think I will probably have to use this on the pan and tilt axes because the 30 rpm gear motors will likely have too much backlash for sub-degree positioning. For the linear motion I could use a threaded rod like a CNC for extreme precision, accuracy, and non-back driving characteristics. However, I can no longer get the 1/2-10 Acme rod for extremely cheap anymore.
 - I've ported over parts of the menu system from before to Arduino to run on a Teensy 3.2 (which I've had lying around for a while doing nothing so I guess it will be the controller of this project), but I'll likely change it up to handle the two rotary axes and support more features like keyframe positioning.
-    - I've essentially got the frame count, duration, and exposure length copied. The menu is controlled with a Wii nunchuck: the joystick changes the value and the z button advances the menu. The amount of time the joystick is tilted and how tilted the stick is affect how fast the increment goes.
+    - I've essentially got the frame count, duration, and exposure length copied. The menu is controlled with a Wii nunchuk: the joystick changes the value and the z button advances the menu. The amount of time the joystick is tilted and how tilted the stick is affect how fast the increment goes.
 
 5.9.17
 
@@ -87,5 +87,13 @@ Jan.-Feb. 2015
 - Also looked into [interpolation methods](http://paulbourke.net/miscellaneous/interpolation/) for computing smooth movement between keyframes. Cubic interpolation looks like the easiest way; it just can cause slight overshoot in some cases. 
 
 5.11.17
-- Added hold times to nunchuck library
+- Added hold times to nunchuk library
 - Still need to create better menu system
+
+5.13.17
+- Created new menu system inspired by AVR Butterfly menu system
+    - Created a state table that pairs states with state functions (each state must have a function)
+    - State text and all state transitions are handled within the function (AVR butterfly has some menu states that are only text, which is why there is a need for a transition table). I wanted the screen to show multiple menu options at once that the user can visually scroll through, so I made each scrollable page a state (and not each menu option).
+- Duration and frame count menus have been implemented
+- Still need to add keyframe functionality and actual run mode
+- Z enters menu and left joystick exits menu (may change this), up/down increments and decrements values
