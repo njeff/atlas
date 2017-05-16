@@ -97,3 +97,9 @@ Jan.-Feb. 2015
 - Duration and frame count menus have been implemented
 - Still need to add keyframe functionality and actual run mode
 - Z enters menu and left joystick exits menu (may change this), up/down increments and decrements values
+
+5.15.17
+- Added keyframe edit mode
+- Keyframes can now be deleted
+- Changed how the cursor is drawn on the keyframe menu so it is handled in one area
+- Added LOOPTIME constant
