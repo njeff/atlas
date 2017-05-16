@@ -20,7 +20,7 @@ STATE homeMode(Nunchuk input, LiquidCrystal lcd){
 	lcd.setCursor(0,position);
 	lcd.print(">");
 
-	if(millis() - lastUpdate > 200){
+	if(millis() - lastUpdate > LOOPTIME){
 		if(input.getJoyY() < -DEADZONE){
 			lcd.setCursor(0,position);
 			lcd.print(" ");
@@ -37,8 +37,8 @@ STATE homeMode(Nunchuk input, LiquidCrystal lcd){
 			}
 			lastUpdate = millis();
 		}
-		//if z was pressed
-		if(input.getChangeZ() && input.zTime() == 1){
+		//if stick moved to right
+		if(input.getJoyX() > DEADZONE && input.xTime() == 1){
 			switch(position){
 				case 0:
 					return KEYFRAME_MENU;
