@@ -99,24 +99,29 @@ STATE keyframeEdit(Nunchuk input, LiquidCrystal lcd){
 	lcd.print(">");
 
 	if(millis() - lastUpdate > LOOPTIME){
-		if(input.getJoyY() < -DEADZONE){
-			if(positionE < 3){
-				lcd.setCursor(0,positionE);
-				lcd.print(" ");
-				positionE++;
+		lcd.setCursor(19,positionE);
+		if(input.getButtonZ()){
+			lcd.print("*"); //mark axis currently being edited
+		} else {
+			lcd.print(" ");
+			if(input.getJoyY() < -DEADZONE){
+				if(positionE < 3){
+					lcd.setCursor(0,positionE);
+					lcd.print(" ");
+					positionE++;
+				}
 			}
-		}
-		if(input.getJoyY() > DEADZONE){
-			if(positionE > 2){
-				lcd.setCursor(0,positionE);
-				lcd.print(" ");
-				positionE--;
+			if(input.getJoyY() > DEADZONE){
+				if(positionE > 2){
+					lcd.setCursor(0,positionE);
+					lcd.print(" ");
+					positionE--;
+				}
+				lastUpdate = millis();
 			}
-			lastUpdate = millis();
-		}
-
-		if(input.getJoyX() < -DEADZONE && input.xTime() == 1){
-			return KEYFRAME_MENU;
+			if(input.getJoyX() < -DEADZONE && input.xTime() == 1){
+				return KEYFRAME_MENU;
+			}
 		}
 	}
 

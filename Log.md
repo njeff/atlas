@@ -103,3 +103,6 @@ Jan.-Feb. 2015
 - Keyframes can now be deleted
 - Changed how the cursor is drawn on the keyframe menu so it is handled in one area
 - Added LOOPTIME constant
+
+5.16.17
+- Added z hold for entering edit mode for each keyframe
