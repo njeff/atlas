@@ -13,7 +13,6 @@ static uint32_t timeBetweenFrames = 0;
 static uint32_t lastTime;
 static uint32_t currentTime;
 static uint32_t endTime;
-static uint32_t timeLeft;
 static bool focused = 0;
 static bool moved = 0;
 
@@ -41,9 +40,10 @@ STATE runMode(Nunchuk input, LiquidCrystal lcd){
 	lcd.setCursor(0,2);
 	lcd.print("Next Frame in:");
 	lcd.setCursor(0,3);
-	for(uint8_t i = 0; i < getFrameCount(); i++){
+	lcd.print("1");
+	for(uint8_t i = 1; i < getFrameCount(); i++){
+		lcd.print("     ");
 		lcd.print(i+1);
-		lcd.print("    ");
 	}
 
 	//if we just entered
@@ -102,7 +102,7 @@ STATE runMode(Nunchuk input, LiquidCrystal lcd){
 	}
 
 	//move
-	if(currentTime > (lastTime+exposure+500) && moved == 0){
+	if(currentTime > (lastTime + getExposure() + 500) && moved == 0){
 		moved = 1;
 
 	}
