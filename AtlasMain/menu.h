@@ -1,4 +1,4 @@
-#define MENU_SIZE 5
+#define MENU_SIZE 6
 
 typedef struct {
 	STATE state;
@@ -10,5 +10,6 @@ MENU_STATE menu_state[] = {
 	{KEYFRAME_MENU, keyframeMode},
 	{KEYFRAME_EDIT, keyframeEdit},
 	{FRAME_MENU, framesMode},
-	{DURATION_MENU, durationMode}
+	{DURATION_MENU, durationMode},
+	{RUNNING, runMode}
 };

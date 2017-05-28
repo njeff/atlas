@@ -3,6 +3,7 @@
 #include <LiquidCrystal.h>
 #include "main.h"
 #include "keyframe.h"
+#include "Motor.h"
 
 static int32_t keyframes[4][3];
 static uint8_t fcount = 1; //number of frames
@@ -34,12 +35,15 @@ STATE keyframeMode(Nunchuk input, LiquidCrystal lcd){
 				fcount++;
 			}
 			lastUpdate = millis();
-		}
-		if(input.getJoyY() > DEADZONE){
+		} else if(input.getJoyY() > DEADZONE){
 			if(positionM > 0){
 				positionM--;
 			}
 			lastUpdate = millis();
+		} else if(input.getJoyX() > DEADZONE && input.xTime() == 1){
+			return KEYFRAME_EDIT;
+		} else if(input.getJoyX() < -DEADZONE && input.xTime() == 1){
+			return HOME_MENU;
 		}
 
 		if(input.getChangeC() && input.cTime() == 1){
@@ -53,14 +57,7 @@ STATE keyframeMode(Nunchuk input, LiquidCrystal lcd){
 				positionM--;
 			}
 		}
-
-		if(input.getJoyX() > DEADZONE && input.xTime() == 1){
-			return KEYFRAME_EDIT;
-		}
-		if(input.getJoyX() < -DEADZONE && input.xTime() == 1){
-			return HOME_MENU;
-		}
-	}
+	}	
 
 	//handle cursor
 	if(positionM != lastPosM){
@@ -102,7 +99,22 @@ STATE keyframeEdit(Nunchuk input, LiquidCrystal lcd){
 		lcd.setCursor(19,positionE);
 		if(input.getButtonZ()){
 			lcd.print("*"); //mark axis currently being edited
+			if(abs(input.getJoyX()) > DEADZONE){
+				if(positionE == 2){
+					linear.setSpeed(input.getJoyX()*8);
+				} else {
+					//pan tilt
+				}
+			} else {
+				linear.setSpeed(0);
+			}
 		} else {
+			//zero out speeds when user lets go of z before stick
+			linear.setSpeed(0);
+
+			//save keyframe positions
+			keyframes[positionM][0] = linear.getPosition();
+
 			lcd.print(" ");
 			if(input.getJoyY() < -DEADZONE){
 				if(positionE < 3){
@@ -110,16 +122,15 @@ STATE keyframeEdit(Nunchuk input, LiquidCrystal lcd){
 					lcd.print(" ");
 					positionE++;
 				}
-			}
-			if(input.getJoyY() > DEADZONE){
+				lastUpdate = millis();
+			} else if(input.getJoyY() > DEADZONE){
 				if(positionE > 2){
 					lcd.setCursor(0,positionE);
 					lcd.print(" ");
 					positionE--;
 				}
 				lastUpdate = millis();
-			}
-			if(input.getJoyX() < -DEADZONE && input.xTime() == 1){
+			} else if(input.getJoyX() < -DEADZONE && input.xTime() == 1){
 				return KEYFRAME_MENU;
 			}
 		}

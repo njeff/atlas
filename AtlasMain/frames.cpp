@@ -43,14 +43,13 @@ STATE framesMode(Nunchuk input, LiquidCrystal lcd){
 				frames = 0;
 			}
 			lastUpdate = millis();
+		} else if(input.getJoyX() < -DEADZONE){
+			return HOME_MENU;
 		}
+		
 		sprintf(buffer, "%5lu", frames);
 		lcd.setCursor(6, 2);
 		lcd.print(buffer);
-
-		if(input.getJoyX() < -DEADZONE){
-			return HOME_MENU;
-		}
 	}
 
 	return FRAME_MENU;

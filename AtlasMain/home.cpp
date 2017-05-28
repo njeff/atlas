@@ -15,7 +15,7 @@ STATE homeMode(Nunchuk input, LiquidCrystal lcd){
 	lcd.setCursor(1, 2);
 	lcd.print("Duration");
 	lcd.setCursor(1, 3);
-	lcd.print("Start");
+	lcd.print("Start (hold z)");
 
 	lcd.setCursor(0,position);
 	lcd.print(">");
@@ -26,8 +26,7 @@ STATE homeMode(Nunchuk input, LiquidCrystal lcd){
 			lcd.print(" ");
 			position = (position+1)%4;
 			lastUpdate = millis();
-		}
-		if(input.getJoyY() > DEADZONE){
+		} else if(input.getJoyY() > DEADZONE){
 			lcd.setCursor(0,position);
 			lcd.print(" ");
 			if(position == 0){
@@ -36,22 +35,21 @@ STATE homeMode(Nunchuk input, LiquidCrystal lcd){
 				position--;
 			}
 			lastUpdate = millis();
-		}
-		//if stick moved to right
-		if(input.getJoyX() > DEADZONE && input.xTime() == 1){
+			//if stick moved to right
+		} else if(input.getJoyX() > DEADZONE && input.xTime() == 1){
 			switch(position){
 				case 0:
 					return KEYFRAME_MENU;
-					break;
 				case 1:
 					return FRAME_MENU;
-					break;
 				case 2:
 					return DURATION_MENU;
-					break;
 				case 3:
-					return RUNNING;
-					break;
+					if(input.getButtonZ()){ //z must be held to start (prevent accidental start)
+						return RUNNING;
+					} else {
+						break;
+					}
 				default:
 					return HOME_MENU;
 			}

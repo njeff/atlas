@@ -2,6 +2,10 @@
 #define DEADZONE 30
 #define LOOPTIME 200
 
+//camera release pins
+#define SHUTTER 13
+#define FOCUS 13
+
 //all states
 typedef enum STATE {
 	HOME_MENU,

@@ -106,3 +106,13 @@ Jan.-Feb. 2015
 
 5.16.17
 - Added z hold for entering edit mode for each keyframe
+
+5.25.17
+- Cut holes in the case for the screen
+
+5.26.17
+- Soldered together part of the circuit since the breadboard was getting a bit hectic
+
+5.27.17
+- Added keyframe motor movement capabilities (need to add other axes; may skip the tilt and only have linear and pan due to hardware time limitation)
+- Working on the actual run mode now
