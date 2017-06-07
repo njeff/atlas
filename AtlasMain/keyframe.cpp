@@ -72,7 +72,7 @@ STATE keyframeMode(Nunchuk input, LiquidCrystal lcd){
 	return KEYFRAME_MENU;
 }
 
-uint8_t getFrameCount(){
+uint8_t getKeyframeCount(){
 	return fcount;
 }
 
@@ -99,9 +99,11 @@ STATE keyframeEdit(Nunchuk input, LiquidCrystal lcd){
 		lcd.setCursor(19,positionE);
 		if(input.getButtonZ()){
 			lcd.print("*"); //mark axis currently being edited
+			
 			if(abs(input.getJoyX()) > DEADZONE){
 				if(positionE == 2){
 					linear.setSpeed(input.getJoyX()*8);
+					//Serial.println(linEnc.read());
 				} else {
 					//pan tilt
 				}

@@ -116,3 +116,25 @@ Jan.-Feb. 2015
 5.27.17
 - Added keyframe motor movement capabilities (need to add other axes; may skip the tilt and only have linear and pan due to hardware time limitation)
 - Working on the actual run mode now
+
+6.3.17
+- Built a rudimentary linear rail system using old parts from the CNC
+
+6.4.17
+- Soldered in more components (on/off switch, power jack)
+- Added motor connector
+- The box is now able to be closed and run on its own
+- The encoders on the motors are really bad. They do not have a quadrature waveform (the pulse widths are not even and do not transition in the right way; there is no point where both channels are low)
+
+6.5.17
+- Got one encoder to work by swapping around magnets between motors and fooling around with how far the hall-effect sensors were from the magnet
+    - I didn't realize earlier but the other two motors are quite bad mechancially; the motors aren't firmly screwed onto their gearboxes
+- Also it turns out when I build my project with Stino on Sublime Text the wrong version of the Encoder library is used so there is no count; building through the Arduino IDE worked. Not sure why.
+- Also it appears that there is some sort of bad connection between the camera and controller; not every trigger causes a photo to be taken (focus is held correctly, but shutter doesn't release)
+- Got basic moves (blocking however) working
+    - Need to somehow get move to start at frame 1
+
+6.6.17
+- And the encoder no longer works, regardless of where the program is compiled :|
+- Not sure what to do with the keyframe situation; the motors are too slow to run back to frame 1 in a timely manner
+    - Currently using the same blocking move in the main moves to reset setup to keyframe 1 before starting (temporary too)

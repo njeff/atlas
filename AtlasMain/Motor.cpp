@@ -25,16 +25,16 @@ void Motor::setSpeed(int speed){
 		digitalWrite(d2, HIGH);
 		analogWrite(pwm, 0);
 	} else if(speed*direction < 0){
-		digitalWrite(d1, HIGH);
-		digitalWrite(d2, LOW);
-		analogWrite(pwm, -speed*direction);
-	} else {
 		digitalWrite(d1, LOW);
 		digitalWrite(d2, HIGH);
+		analogWrite(pwm, -speed*direction);
+	} else {
+		digitalWrite(d1, HIGH);
+		digitalWrite(d2, LOW);
 		analogWrite(pwm, speed*direction);
 	}
 }
 
-int64_t Motor::getPosition(){
+int Motor::getPosition(){
 	return enc->read();
 }

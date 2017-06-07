@@ -63,6 +63,9 @@ void setup(){
 	//set camera pins
 	pinMode(FOCUS, OUTPUT);
 	pinMode(SHUTTER, OUTPUT);
+	digitalWrite(FOCUS, LOW);
+	digitalWrite(SHUTTER, LOW);
+	//Serial.begin(115200);
 }
 
 void loop(){

@@ -15,7 +15,7 @@ class Motor {
 	public:
 		Motor(uint8_t _pwm, uint8_t _d1, uint8_t _d2, Encoder *_enc, uint8_t _direction);
 		void setSpeed(int speed);
-		int64_t getPosition();
+		int getPosition();
 };
 
 //add Motors

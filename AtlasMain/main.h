@@ -4,7 +4,7 @@
 
 //camera release pins
 #define SHUTTER 13
-#define FOCUS 13
+#define FOCUS 15
 
 //all states
 typedef enum STATE {
