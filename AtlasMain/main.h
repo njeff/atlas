@@ -3,8 +3,8 @@
 #define LOOPTIME 200
 
 //camera release pins
-#define SHUTTER 13
-#define FOCUS 15
+#define SHUTTER 15
+#define FOCUS 13
 
 //all states
 typedef enum STATE {

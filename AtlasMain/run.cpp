@@ -79,7 +79,7 @@ STATE runMode(Nunchuk input, LiquidCrystal lcd){
 			//run to frame 1
 			//linear
 			while(abs(linear.getPosition() - getKeyframe(0,0)) > 10){
-				if(linear.getPosition() > linPos){
+				if(linear.getPosition() > getKeyframe(0,0)){
 					linear.setSpeed(-800);
 				} else {
 					linear.setSpeed(800);
